@@ -426,6 +426,7 @@ if(SYSTEM.Darwin)
 endif()
 
 install(TARGETS dobby
+  ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib)
 
 if(SYSTEM.Darwin)
