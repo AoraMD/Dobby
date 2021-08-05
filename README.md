@@ -1,6 +1,6 @@
-## Dobby 
+## Dobby Prefab
 
-[![Contact me Telegram](https://img.shields.io/badge/Contact%20me-Telegram-blue.svg)](https://t.me/IOFramebuffer) [![Join group Telegram](https://img.shields.io/badge/Join%20group-Telegram-brightgreen.svg)](https://t.me/dobby_group)  
+> This repository is for building Android Prefeb packages of [Dobby](https://github.com/jmpews/Dobby).
 
 Dobby a lightweight, multi-platform, multi-architecture exploit hook framework.
 
@@ -13,33 +13,58 @@ Dobby a lightweight, multi-platform, multi-architecture exploit hook framework.
 
 ## Getting started
 
+Enable prefab in project (requires AGP 4.0+).
+
+> See [Android Developers - Using native dependencies](https://developer.android.com/studio/build/native-dependencies) for more details.
+
+Add dependencies.
+
+``` groovy
+// Groovy DSL
+repositories {
+    ...
+    maven {
+        url 'https://maven.pkg.github.com/aoramd/*'
+        credentials {
+            username '<github_username>'
+            password '<github_token>'
+        }
+    }
+}
+
+dependencies {
+    ...
+    implementation 'moe.aoramd.prefab:dobby:<latest-version>'
+}
 ```
-git clone https://github.com/jmpews/Dobby.git --depth=1
-cd Dobby/example/
-mkdir build; cd build; cmake ..
+
+``` kotlin
+// Kotlin DSL
+repositories {
+    ...
+    maven {
+        url = "https://maven.pkg.github.com/aoramd/*"
+        credentials {
+            username = "<github_username>"
+            password = "<github_token>"
+        }
+    }
+}
+
+dependencies {
+    ...
+    implementation("moe.aoramd.prefab:dobby:<latest-version>")
+}
 ```
 
-Or download [latest release](https://github.com/jmpews/Dobby/releases/tag/latest)
+Find library in CMake.
 
-#### [Build Installation](docs/build-documentation.md)
+> See [Android Developers - Using native dependencies](https://developer.android.com/studio/build/native-dependencies) for ndk-build makefile or more details.
 
-#### [Getting Started with iOS](docs/get-started-ios.md)
+```cmake
+...
 
-#### [Getting Started with Android](docs/get-started-android.md)
-
-## Documentation
-
-[full Installation documentation site](https://jmpews.github.io/Dobby/#/)
-
-## Download
-
-[download static library](https://github.com/jmpews/Dobby/releases/tag/latest)
-
-## Credits
-
-1. [frida-gum](https://github.com/frida/frida-gum)
-2. [minhook](https://github.com/TsudaKageyu/minhook)
-3. [substrate](https://github.com/jevinskie/substrate).
-4. [v8](https://github.com/v8/v8)
-5. [dart](https://github.com/dart-lang/sdk)
-6. [vixl](https://git.linaro.org/arm/vixl.git)
+# Add these two lines
+find_package(dobby REQUIRED CONFIG)
+target_link_libraries(<your-library> dobby::dobby)
+```
