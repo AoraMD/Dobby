@@ -1,0 +1,37 @@
+name: build
+
+on:
+  push:
+    tags:
+      - release-**
+  pull_request:
+    tags:
+      - release-**
+
+jobs:
+  build:
+    name: Build and Publish Library
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Java Development Kit
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Load Build Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Build and Publish Library
+        run: |
+          cd android
+          ./gradlew dobby:publishReleasePublicationToGitHubPackagesRepository --stacktrace
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
